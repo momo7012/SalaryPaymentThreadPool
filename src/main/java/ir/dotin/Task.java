@@ -16,7 +16,7 @@ import static ir.dotin.PaymentTransactionApp.balanceVOs;
 public class Task implements Runnable {
     List<PaymentVO> paymentVOs = new ArrayList<>();
 
-    public static String createFinalBalanceFileThreading (List < BalanceVO > depositBalances) throws IOException {
+    public static String createFinalBalanceFileThreading(List<BalanceVO> depositBalances) throws IOException {
 
         String resultFinalBalance = "";
         Path pathBalanceUpdate = Paths.get(FILE_PATH_PREFIX + "BalanceUpdateThreading.txt");
@@ -27,13 +27,14 @@ public class Task implements Runnable {
         return resultFinalBalance;
     }
 
-    private static void writeFinalBalanceVOToFileThreading (List < BalanceVO > balanceVOs) throws IOException {
+    private static void writeFinalBalanceVOToFileThreading(List<BalanceVO> balanceVOs) throws IOException {
         PrintWriter printWriter = new PrintWriter(PaymentTransactionApp.BALANCE_UPDATE_FILE_PATH);
         for (BalanceVO balanceVO : balanceVOs) {
             printWriter.println(balanceVO.toString());
         }
         printWriter.close();
     }
+
     private static void printBalanceVOsToConsole(List<BalanceVO> balanceVOS) {
         System.out.println("*********************** BALANCETHREAD *************************");
         for (BalanceVO balanceVO : balanceVOS)
@@ -42,8 +43,7 @@ public class Task implements Runnable {
     }
 //==============================================================
 
-    public static String createFinalBalanceFileThreadingNew (List < BalanceVO > depositBalances) throws IOException
-    {
+    public static String createFinalBalanceFileThreadingNew(List<BalanceVO> depositBalances) throws IOException {
 
         File dir = new File(FILE_PATH_PREFIX + "BalanceUpdateThreading.txt");
 
@@ -75,50 +75,49 @@ public class Task implements Runnable {
     }
 
 
-
-
-    //==============================================================
     @Override
-    public void run () {
-         for (PaymentVO paymentVO : paymentVOs) {
-        List<PaymentVO> th1 = paymentVOs.subList(1, 201);
-        List<PaymentVO> th2 = paymentVOs.subList(201, 401);
-        List<PaymentVO> th3 = paymentVOs.subList(401, 601);
-        List<PaymentVO> th4 = paymentVOs.subList(601, 801);
-        List<PaymentVO> th5 = paymentVOs.subList(801, 1000);
-
-         }
-        for (BalanceVO balanceVO : balanceVOs) {
-        try {
+    public void run() {
+        for (PaymentVO paymentVO : paymentVOs) {
+            List<PaymentVO> th1 = paymentVOs.subList(1, 201);
+            List<PaymentVO> th2 = paymentVOs.subList(201, 401);
+            List<PaymentVO> th3 = paymentVOs.subList(401, 601);
+            List<PaymentVO> th4 = paymentVOs.subList(601, 801);
+            List<PaymentVO> th5 = paymentVOs.subList(801, 1000);
 
 
-            List<BalanceVO> balance1 = balanceVOs.subList(0, 200);
-            {
-                createFinalBalanceFileThreading(balance1);
-            }
-            List<BalanceVO> balance2 = balanceVOs.subList(200, 400);
-            {
-                createFinalBalanceFileThreading(balance2);
-            }
-            List<BalanceVO> balance3 = balanceVOs.subList(400, 600);
-            {
-                createFinalBalanceFileThreading(balance3);
-            }
-            List<BalanceVO> balance4 = balanceVOs.subList(600, 800);
-            {
-                createFinalBalanceFileThreading(balance4);
-            }
-            List<BalanceVO> balance5 = balanceVOs.subList(800, 1000);
-            {
-                createFinalBalanceFileThreading(balance5);
-            }
+            //}
+            for (BalanceVO balanceVO : balanceVOs) {
+                try {
 
-            createFinalBalanceFileThreadingNew(balanceVOs);
-        } catch (IOException e) {
-            e.printStackTrace();
+
+                    List<BalanceVO> balance1 = balanceVOs.subList(0, 200);
+                    {
+                        createFinalBalanceFileThreading(balance1);
+                    }
+                    List<BalanceVO> balance2 = balanceVOs.subList(200, 400);
+                    {
+                        createFinalBalanceFileThreading(balance2);
+                    }
+                    List<BalanceVO> balance3 = balanceVOs.subList(400, 600);
+                    {
+                        createFinalBalanceFileThreading(balance3);
+                    }
+                    List<BalanceVO> balance4 = balanceVOs.subList(600, 800);
+                    {
+                        createFinalBalanceFileThreading(balance4);
+                    }
+                    List<BalanceVO> balance5 = balanceVOs.subList(800, 1000);
+                    {
+                        createFinalBalanceFileThreading(balance5);
+                    }
+
+                    createFinalBalanceFileThreadingNew(balanceVOs);
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+            }
         }
+
     }
-}
-
-
 }
