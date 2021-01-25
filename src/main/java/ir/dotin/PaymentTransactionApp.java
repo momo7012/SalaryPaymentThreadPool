@@ -3,13 +3,14 @@ package ir.dotin;
 import ir.dotin.business.TransactionProcessor;
 import ir.dotin.files.*;
 
-import java.io.FileNotFoundException;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 
 public class PaymentTransactionApp {
     public static final String FILE_PATH_PREFIX = "E://";
@@ -24,12 +25,7 @@ public class PaymentTransactionApp {
     private static final int MIN_AMOUNT = 100;
     private static final int MAX_AMOUNT = 10000;
     private static final Random random = new Random();
-    //-------------------------------------------------
-    private static Runnable th1;
-    private static Runnable th2;
-    private static Runnable th3;
-    private static Runnable th4;
-    private static Runnable th5;
+
     //----------------------------------------------------------------------------
     //ok
     public static BigDecimal generateRandomAmount() {
@@ -39,14 +35,20 @@ public class PaymentTransactionApp {
     public static void main(String[] args) {
 //------------------------------------------------------
         Task task = new Task();
-
-        Thread thread1 = new Thread(th1);
-        Thread thread2 = new Thread(th2);
-        Thread thread3 = new Thread(th3);
-        Thread thread4 = new Thread(th4);
-        Thread thread5 = new Thread(th5);
-
+        Thread thread1 = new Thread(task);
+        Thread thread2 = new Thread(task);
+        Thread thread3 = new Thread(task);
+        Thread thread4 = new Thread(task);
+        Thread thread5 = new Thread(task);
         {
+
+            ExecutorService pool = Executors.newFixedThreadPool(5);
+
+            pool.execute(thread1);
+            pool.execute(thread2);
+            pool.execute(thread3);
+            pool.execute(thread4);
+            pool.execute(thread5);
 //--------------------------------------------------------------------------------------
             //ok
             try {
@@ -60,19 +62,11 @@ public class PaymentTransactionApp {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            ExecutorService executor = Executors.newFixedThreadPool(5);
-            //  while (true) {
-
-            executor.execute(thread1);
-            executor.execute(thread2);
-            executor.execute(thread3);
-            executor.execute(thread4);
-            executor.execute(thread5);
-            System.out.println(Thread.currentThread().getName());
-
-            //}
+            pool.shutdown();
 
         }
-    }
 
+    }
 }
+
+
