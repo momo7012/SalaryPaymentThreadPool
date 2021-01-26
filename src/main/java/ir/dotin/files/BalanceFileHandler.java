@@ -35,6 +35,7 @@ public class BalanceFileHandler {
 //---------------------------------------------------------------
 
     public static List<BalanceVO> createFinalBalanceFileThreadPool(List<BalanceVO> depositBalances) throws IOException {
+
         String resultFinalBalance = "";
         List<BalanceVO> balance1 = balanceVOs.subList(1, 200);
         {
@@ -84,8 +85,10 @@ public class BalanceFileHandler {
         String sourceFile3Path = PaymentTransactionApp.FILE_PATH_PREFIX + "BalanceUpdate.txt3";
         String sourceFile4Path = PaymentTransactionApp.FILE_PATH_PREFIX + "BalanceUpdate.txt4";
         String sourceFile5Path = PaymentTransactionApp.FILE_PATH_PREFIX + "BalanceUpdate.txt5";
-        String mergedFilePath = PaymentTransactionApp.FILE_PATH_PREFIX + "BalanceUpdateThreading.txt";
 
+        Path pathBalanceUpdate = Paths.get(PaymentTransactionApp.FILE_PATH_PREFIX + "BalanceUpdateThreading.txt");
+        Files.createFile(pathBalanceUpdate);
+        String mergedFilePath = PaymentTransactionApp.FILE_PATH_PREFIX + "BalanceUpdateThreading.txt";
         File[] files = new File[5];
         files[0] = new File(sourceFile1Path);
         files[1] = new File(sourceFile2Path);
