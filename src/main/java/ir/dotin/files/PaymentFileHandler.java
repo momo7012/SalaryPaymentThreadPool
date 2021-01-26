@@ -22,8 +22,9 @@ public class PaymentFileHandler {
         BigDecimal a = PaymentTransactionApp.generateRandomAmount().add(b);
         paymentVOs.add(new PaymentVO(DEBTOR, debtorDepositNumber, a));
 //---------------------------------------------------------------------------
-        //  paymentVOs.add(new PaymentVO(DEBTOR, debtorDepositNumber, PaymentTransactionApp.generateRandomAmount()));
-        for (int i = 1; i <= creditorCount; i++) {
+        //ok
+      //  paymentVOs.add(new PaymentVO(DEBTOR, debtorDepositNumber, PaymentTransactionApp.generateRandomAmount()));
+      for (int i = 1; i <= creditorCount; i++) {
             paymentVOs.add(new PaymentVO(CREDITOR, creditorDepositNumberPrefix + i, PaymentTransactionApp.generateRandomAmount()));
         }
         writePaymentRecordsToFile(paymentVOs);
@@ -31,7 +32,42 @@ public class PaymentFileHandler {
         return paymentVOs;
 
     }
-
+//--------------------------------------------------
+      /*  //  for (PaymentVO paymentVO : paymentVOs) {
+        for (int i = 1; i < 201; i++) {
+            List<PaymentVO> th1 = paymentVOs.subList(1, 201);
+            paymentVOs.add(new PaymentVO(CREDITOR, creditorDepositNumberPrefix + i, PaymentTransactionApp.generateRandomAmount()));
+            writePaymentRecordsToFile(paymentVOs);
+            printPaymentVOsToConsole(paymentVOs);
+        }
+        for (int i = 201; i < 401; i++) {
+            List<PaymentVO> th2 = paymentVOs.subList(201, 401);
+            paymentVOs.add(new PaymentVO(CREDITOR, creditorDepositNumberPrefix + i, PaymentTransactionApp.generateRandomAmount()));
+            writePaymentRecordsToFile(paymentVOs);
+            printPaymentVOsToConsole(paymentVOs);
+        }
+        for (int i = 401; i < 601; i++) {
+            List<PaymentVO> th3 = paymentVOs.subList(401, 601);
+            paymentVOs.add(new PaymentVO(CREDITOR, creditorDepositNumberPrefix + i, PaymentTransactionApp.generateRandomAmount()));
+            writePaymentRecordsToFile(paymentVOs);
+            printPaymentVOsToConsole(paymentVOs);
+        }
+        for (int i = 601; i < 801; i++) {
+            List<PaymentVO> th4 = paymentVOs.subList(601, 801);
+            paymentVOs.add(new PaymentVO(CREDITOR, creditorDepositNumberPrefix + i, PaymentTransactionApp.generateRandomAmount()));
+            writePaymentRecordsToFile(paymentVOs);
+            printPaymentVOsToConsole(paymentVOs);
+        }
+        for (int i = 801; i <= 1000; i++) {
+            List<PaymentVO> th5 = paymentVOs.subList(801, 1000);
+            paymentVOs.add(new PaymentVO(CREDITOR, creditorDepositNumberPrefix + i, PaymentTransactionApp.generateRandomAmount()));
+            writePaymentRecordsToFile(paymentVOs);
+            printPaymentVOsToConsole(paymentVOs);
+        }
+        return paymentVOs;
+    }
+*/
+//-------------------------------------------------------
     private static void printPaymentVOsToConsole(List<PaymentVO> paymentVOs) {
         System.out.println("******************* PAYMENTS **********************");
         for (PaymentVO paymentVO : paymentVOs)

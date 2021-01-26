@@ -9,12 +9,35 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import static ir.dotin.PaymentTransactionApp.FILE_PATH_PREFIX;
 import static ir.dotin.PaymentTransactionApp.balanceVOs;
 
 public class Task implements Runnable {
-    List<PaymentVO> paymentVOs = new ArrayList<>();
+    private String taskName;
+
+   public Task(String taskName) {
+        super();
+        this.taskName = taskName;
+    }
+   /* List<PaymentVO> paymentVOs;
+    public Task(List<PaymentVO> paymentVOs){
+        this.paymentVOs = paymentVOs;
+    }*/
+   List<PaymentVO> paymentVOs = new ArrayList<>();
+    @Override
+    public void run() {
+        System.out.println("Starting "+taskName);
+        for (int i = 1; i <= 10; i++) {
+            System.out.println("Executing "+taskName+" with "+Thread.currentThread().getName()+"===="+i);
+        }
+        System.out.println("Ending "+taskName);
+        System.out.println(Thread.currentThread().getName());
+    }
+
+}
+   /* List<PaymentVO> paymentVOs = new ArrayList<>();
 
     public static String createFinalBalanceFileThreading(List<BalanceVO> depositBalances) throws IOException {
 
@@ -42,12 +65,12 @@ public class Task implements Runnable {
         System.out.println("***********************************************************");
     }
 //==============================================================
-
+*//*
     public static String createFinalBalanceFileThreadingNew(List<BalanceVO> depositBalances) throws IOException {
 
         File dir = new File(FILE_PATH_PREFIX + "BalanceUpdateThreading.txt");
 
-        PrintWriter pw = new PrintWriter("BalanceUpdateThreadingNew.txt");
+        PrintWriter pw = new PrintWriter("BalanceUpdate.txt");
 
         String[] fileNames = dir.list();
 
@@ -72,21 +95,15 @@ public class Task implements Runnable {
         System.out.println("Reading from all files" +
                 " in directory " + dir.getName() + " Completed");
         return dir.getName();
-    }
+    }*//*
 
 
     @Override
     public void run() {
-        for (PaymentVO paymentVO : paymentVOs) {
-            List<PaymentVO> th1 = paymentVOs.subList(1, 201);
-            List<PaymentVO> th2 = paymentVOs.subList(201, 401);
-            List<PaymentVO> th3 = paymentVOs.subList(401, 601);
-            List<PaymentVO> th4 = paymentVOs.subList(601, 801);
-            List<PaymentVO> th5 = paymentVOs.subList(801, 1000);
+        System.out.println(Thread.currentThread().getName());
+    }
 
-
-            //}
-            for (BalanceVO balanceVO : balanceVOs) {
+           *//* for (BalanceVO balanceVO : balanceVOs) {
                 try {
 
 
@@ -112,12 +129,14 @@ public class Task implements Runnable {
                     }
 
                     createFinalBalanceFileThreadingNew(balanceVOs);
-                } catch (IOException e) {
+*//*
+              *//*  } catch (IOException e) {
                     e.printStackTrace();
 
-                }
-            }
-        }
+                }*//*
+          //  }
 
-    }
+
+
 }
+*/
