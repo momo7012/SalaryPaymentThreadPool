@@ -1,31 +1,74 @@
 package ir.dotin;
 
 import ir.dotin.files.BalanceVO;
-import ir.dotin.files.PaymentVO;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Future;
-
-import static ir.dotin.PaymentTransactionApp.FILE_PATH_PREFIX;
-import static ir.dotin.PaymentTransactionApp.balanceVOs;
 
 public class Task implements Runnable {
+
+    @Override
+    public void run() {
+        File file = new File(PaymentTransactionApp.BALANCE_FILE_PATH);
+//creates a buffer reader input stream
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(file));
+            int r = 0;
+            while (true) {
+
+                if (!((r = br.read()) != -1)) break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static synchronized void writeFinalBalanceVOToFile(List<BalanceVO> balanceVOs) throws IOException {
+        PrintWriter printWriter = new PrintWriter(PaymentTransactionApp.BALANCE_UPDATE_FILE_PATH);
+        for (BalanceVO balanceVO : balanceVOs) {
+            printWriter.println(balanceVO.toString());
+        }
+        printWriter.close();
+    }
+}
+//============================================================
+
+
+
+    /*
+    //Parallel
+    static Map<String, BigDecimal> lastState;
+    static Map<String, BigDecimal> map;
+
+    public Task(Map<String, BigDecimal> map) {
+        this.map = map;
+        this.lastState = new HashMap<>(map); }
+    @Override
+    public void run() {
+        Map<String, BigDecimal> currentState = new HashMap<>(map);
+        if(currentState.equals(lastState)) {
+            System.out.println("No change");
+        } else {
+            System.out.println("Change!");
+        }lastState.clear();
+        lastState.putAll(currentState);
+    }
+    }
+//-------------------------------------------------------------------
+
+    /*
     private String taskName;
 
    public Task(String taskName) {
         super();
         this.taskName = taskName;
-    }
+    }*/
    /* List<PaymentVO> paymentVOs;
     public Task(List<PaymentVO> paymentVOs){
         this.paymentVOs = paymentVOs;
     }*/
-   List<PaymentVO> paymentVOs = new ArrayList<>();
+  /* List<PaymentVO> paymentVOs = new ArrayList<>();
     @Override
     public void run() {
         System.out.println("Starting "+taskName);
@@ -37,6 +80,8 @@ public class Task implements Runnable {
     }
 
 }
+*/
+//----------------------------------------------------------------------
    /* List<PaymentVO> paymentVOs = new ArrayList<>();
 
     public static String createFinalBalanceFileThreading(List<BalanceVO> depositBalances) throws IOException {
@@ -130,7 +175,7 @@ public class Task implements Runnable {
 
                     createFinalBalanceFileThreadingNew(balanceVOs);
 *//*
-              *//*  } catch (IOException e) {
+ *//*  } catch (IOException e) {
                     e.printStackTrace();
 
                 }*//*

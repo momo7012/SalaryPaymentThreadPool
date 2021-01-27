@@ -21,7 +21,7 @@ public class TransactionFileHandler {
         return resultTransaction;
     }
 
-    private static void writeTransactionVOToFile(List<TransactionVO> transactionVOS) throws IOException {
+    public static void writeTransactionVOToFile(List<TransactionVO> transactionVOS) throws IOException {
         PrintWriter printWriter = new PrintWriter(PaymentTransactionApp.TRANSACTION_FILE_PATH);
         for (TransactionVO transactionVO : transactionVOS) {
             printWriter.println(transactionVO.toString());
@@ -29,7 +29,7 @@ public class TransactionFileHandler {
         printWriter.close();
     }
 
-    private static void printTransactionVOsToConsole(List<TransactionVO> transactionVOS) {
+    public static void printTransactionVOsToConsole(List<TransactionVO> transactionVOS) {
         System.out.println("******************** TRANSACTION ************************");
         for (TransactionVO transactionVO : transactionVOS)
             System.out.println(transactionVO.toString());

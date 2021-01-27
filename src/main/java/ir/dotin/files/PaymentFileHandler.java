@@ -23,8 +23,8 @@ public class PaymentFileHandler {
         paymentVOs.add(new PaymentVO(DEBTOR, debtorDepositNumber, a));
 //---------------------------------------------------------------------------
         //ok
-      //  paymentVOs.add(new PaymentVO(DEBTOR, debtorDepositNumber, PaymentTransactionApp.generateRandomAmount()));
-      for (int i = 1; i <= creditorCount; i++) {
+        //  paymentVOs.add(new PaymentVO(DEBTOR, debtorDepositNumber, PaymentTransactionApp.generateRandomAmount()));
+        for (int i = 1; i <= creditorCount; i++) {
             paymentVOs.add(new PaymentVO(CREDITOR, creditorDepositNumberPrefix + i, PaymentTransactionApp.generateRandomAmount()));
         }
         writePaymentRecordsToFile(paymentVOs);
@@ -32,7 +32,8 @@ public class PaymentFileHandler {
         return paymentVOs;
 
     }
-//--------------------------------------------------
+
+    //--------------------------------------------------
       /*  //  for (PaymentVO paymentVO : paymentVOs) {
         for (int i = 1; i < 201; i++) {
             List<PaymentVO> th1 = paymentVOs.subList(1, 201);
@@ -68,14 +69,14 @@ public class PaymentFileHandler {
     }
 */
 //-------------------------------------------------------
-    private static void printPaymentVOsToConsole(List<PaymentVO> paymentVOs) {
+    public static void printPaymentVOsToConsole(List<PaymentVO> paymentVOs) {
         System.out.println("******************* PAYMENTS **********************");
         for (PaymentVO paymentVO : paymentVOs)
             System.out.println(paymentVO.toString());
         System.out.println("****************************************************");
     }
 
-    private static void writePaymentRecordsToFile(List<PaymentVO> paymentVOs) throws IOException {
+    public static void writePaymentRecordsToFile(List<PaymentVO> paymentVOs) throws IOException {
         PrintWriter printWriter = new PrintWriter(PaymentTransactionApp.PAYMENT_FILE_PATH);
         for (PaymentVO paymentVO : paymentVOs) {
             printWriter.println(paymentVO.toString());

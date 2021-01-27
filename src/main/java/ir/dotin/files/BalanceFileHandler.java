@@ -2,15 +2,14 @@ package ir.dotin.files;
 
 import ir.dotin.PaymentTransactionApp;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.concurrent.Future;
 
-import static ir.dotin.PaymentTransactionApp.FILE_PATH_PREFIX;
 import static ir.dotin.PaymentTransactionApp.balanceVOs;
 
 public class BalanceFileHandler {
@@ -32,8 +31,9 @@ public class BalanceFileHandler {
         printBalanceVOsToConsole(balanceVOs);
         return balanceVOs;
     }
-//---------------------------------------------------------------
 
+    //---------------------------------------------------------------
+/*
     public static List<BalanceVO> createFinalBalanceFileThreadPool(List<BalanceVO> depositBalances) throws IOException {
 
         String resultFinalBalance = "";
@@ -139,18 +139,18 @@ public class BalanceFileHandler {
 
     }
 
-
-    //----------------------------------------------------------------
-    private static void writeBalanceVOToFile(List<BalanceVO> balanceVOs) throws IOException {
+*/
+//----------------------------------------------------------------
+    public static void writeBalanceVOToFile(List<BalanceVO> balanceVOs) throws IOException {
         PrintWriter printWriter = new PrintWriter(PaymentTransactionApp.BALANCE_FILE_PATH);
-            for (BalanceVO balanceVO : balanceVOs) {
-                printWriter.println(balanceVO.toString());
-            }
-            printWriter.close();
+        for (BalanceVO balanceVO : balanceVOs) {
+            printWriter.println(balanceVO.toString());
         }
+        printWriter.close();
+    }
 
 
-    private static void printBalanceVOsToConsole(List<BalanceVO> balanceVOS) {
+    public static void printBalanceVOsToConsole(List<BalanceVO> balanceVOS) {
         System.out.println("*********************** BALANCE *************************");
         for (BalanceVO balanceVO : balanceVOS)
             System.out.println(balanceVO.toString());
@@ -158,24 +158,24 @@ public class BalanceFileHandler {
     }
 
 
-    public static List<BalanceVO> createFinalBalanceFile(Future<BalanceVO> depositBalances)
+    public static String createFinalBalanceFile(List<BalanceVO> depositBalances)
             throws IOException {
         String resultFinalBalance = "";
-      for (int i = 1; i <= 5; i++) {
-            Path pathBalanceUpdate = Paths.get(PaymentTransactionApp.FILE_PATH_PREFIX + "BalanceUpdate.txt"+i);
-            Files.createFile(pathBalanceUpdate);
-        }
-        createFinalBalanceFileThreadPool(balanceVOs);
-      // createFinalBalanceFileThreadingNew(balanceVOs);
-        // writeFinalBalanceVOToFile(balanceVOs);
+        // for (int i = 1; i <= 5; i++) {
+        Path pathBalanceUpdate = Paths.get(PaymentTransactionApp.FILE_PATH_PREFIX + "BalanceUpdate.txt");
+        Files.createFile(pathBalanceUpdate);
+        //  }
+        // createFinalBalanceFileThreadPool(balanceVOs);
+        // createFinalBalanceFileThreadingNew(balanceVOs);
+        writeFinalBalanceVOToFile(balanceVOs);
         resultFinalBalance += PaymentTransactionApp.DEBTOR_DEPOSIT_NUMBER + "\t" + PaymentTransactionApp.CREDITOR_DEPOSIT_NUMBER_PREFIX + "\t" + depositBalances + "\n";
         printFinalBalanceVOsToConsole(balanceVOs);
-      //  return resultFinalBalance;
+        return resultFinalBalance;
 
-        return null;
+        //  return null;
     }
 
-    private static void writeFinalBalanceVOToFile(List<BalanceVO> balanceVOs) throws IOException {
+    public static void writeFinalBalanceVOToFile(List<BalanceVO> balanceVOs) throws IOException {
         PrintWriter printWriter = new PrintWriter(PaymentTransactionApp.BALANCE_UPDATE_FILE_PATH);
         for (BalanceVO balanceVO : balanceVOs) {
             printWriter.println(balanceVO.toString());
@@ -183,7 +183,7 @@ public class BalanceFileHandler {
         printWriter.close();
     }
 
-    private static void printFinalBalanceVOsToConsole(List<BalanceVO> balanceVOS) {
+    public static void printFinalBalanceVOsToConsole(List<BalanceVO> balanceVOS) {
         System.out.println("*********************** FinalBALANCE **********************");
         for (BalanceVO balanceVO : balanceVOS)
             System.out.println(balanceVO.toString());

@@ -3,14 +3,13 @@ package ir.dotin;
 import ir.dotin.business.TransactionProcessor;
 import ir.dotin.files.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 
 public class PaymentTransactionApp {
@@ -33,22 +32,49 @@ public class PaymentTransactionApp {
     }
 
     public static void main(String[] args) {
-        //  ExecutorService pool = Executors.newFixedThreadPool(5);
+//----------------------------------
+        /*
+//Parallel Streams
+        List<PaymentVO> list = IntStream.range(0, 1000).boxed().collect(Collectors.toList());
+        Map<String, BigDecimal> map = new HashMap<>();
+        list.parallelStream().forEach(i -> {
+            map.put("i", i);
+        });
+       /* // List<PaymentVO> listPay = new ArrayList<>();
+        List<PaymentVO> paymentVO = Arrays.asList();
+        List<Object> syncList = Collections.synchronizedList(new ArrayList<>());
+        paymentVO.parallelStream()
 
-        //  Task task = new Task();
-        //  List<PaymentVO> paymentVOs = new ArrayList<>();
-        //Thread thread1 = new Thread(task);
-        // Thread thread2 = new Thread(task);
-        //Thread thread3 = new Thread(task);
-        // Thread thread4 = new Thread(task);
-        // Thread thread5 = new Thread(task);
+                .map(e -> {
+                    syncList.add(e);
+                    return e;
+                })
+                .forEachOrdered(e -> System.out.print(e + " "));
 
-        // pool.execute(thread1);
-        //  pool.execute(thread2);
-        // pool.execute(thread3);
-        //  pool.execute(thread4);
-        // pool.execute(thread5);
+        System.out.println("");
+
+        syncList.stream().forEachOrdered(e -> System.out.print(e + " "));
+        System.out.println("");
+
+*/
+//---------------------------------------
+//ExecutorService
+        ExecutorService pool = Executors.newFixedThreadPool(5);
+
+        Task task = new Task();
+        Thread thread1 = new Thread(task);
+        Thread thread2 = new Thread(task);
+        Thread thread3 = new Thread(task);
+        Thread thread4 = new Thread(task);
+        Thread thread5 = new Thread(task);
+
+        pool.execute(thread1);
+        pool.execute(thread2);
+        pool.execute(thread3);
+        pool.execute(thread4);
+        pool.execute(thread5);
 //------------------------------------------------
+        /*
         //List<Future<PaymentVO>> resultList = new ArrayList<>();
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         for (int i = 1; i <= 10; i++) {
@@ -63,39 +89,27 @@ public class PaymentTransactionApp {
             Future<BalanceVO> future4 = (Future<BalanceVO>) executorService.submit(thread4);
             Thread thread5 = new Thread(task);
             Future<BalanceVO> future5 = (Future<BalanceVO>) executorService.submit(thread5);
-
-//------------------------------------------------
-
-            try {
-                List<PaymentVO> paymentVOs = PaymentFileHandler.createPaymentFile(DEBTOR_DEPOSIT_NUMBER, CREDITOR_DEPOSIT_NUMBER_PREFIX, CREDITOR_COUNT);
-                List<BalanceVO> depositBalances = BalanceFileHandler.createInitialBalanceFile(balanceVOs);
-                List<TransactionVO> transactionVOS = TransactionProcessor.processPaymentRecords(depositBalances, paymentVOs);
-                TransactionFileHandler.createTransactionFile(transactionVOS, depositBalances);
-//------------------------------
-                List<BalanceVO> depositBalances1 = BalanceFileHandler.createFinalBalanceFile( future1);
-                List<BalanceVO> depositBalances2 =  BalanceFileHandler.createFinalBalanceFile(future2);
-                List<BalanceVO> depositBalances3 =  BalanceFileHandler.createFinalBalanceFile( future3);
-                List<BalanceVO> depositBalances4 =  BalanceFileHandler.createFinalBalanceFile( future4);
-                List<BalanceVO> depositBalances5 =  BalanceFileHandler.createFinalBalanceFile(future5);
-                 BalanceFileHandler.createFinalBalanceFileThreadingNew(depositBalances1,depositBalances2,depositBalances3,depositBalances4,depositBalances5);
-//-----------------------------
-               // BalanceFileHandler.createFinalBalanceFile(depositBalances);
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-//------------------------------------------------------------------------------------------
-            // thread1.start();
-            //thread2.start();
-            // thread3.start();
-            // thread4.start();
-            // thread5.start();
-
-            //  pool.shutdown();
-
+*/
+//-------------------------------------------------------------------------------------
+        try {
+            List<PaymentVO> paymentVOs = PaymentFileHandler.createPaymentFile(DEBTOR_DEPOSIT_NUMBER, CREDITOR_DEPOSIT_NUMBER_PREFIX, CREDITOR_COUNT);
+            List<BalanceVO> depositBalances = BalanceFileHandler.createInitialBalanceFile(balanceVOs);
+            List<TransactionVO> transactionVOS = TransactionProcessor.processPaymentRecords(depositBalances, paymentVOs);
+            BalanceFileHandler.createFinalBalanceFile(depositBalances);
+            TransactionFileHandler.createTransactionFile(transactionVOS, depositBalances);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+//------------------------------------------------------------------------------------------
+// thread1.start();
+//thread2.start();
+// thread3.start();
+// thread4.start();
+// thread5.start();
 
+        pool.shutdown();
     }
 }
 
